@@ -1,0 +1,23 @@
+{
+    "appId": "com.redowan.shutdowner",
+    "files": ["dist-ui", "dist-electron"],
+    "mac": {
+        // "icon": "icon.png",
+        // "background": "background.png",
+        // "splash": "splash.png",
+        // "screenshots": [
+        //     "screenshot1.png",
+        //     "screenshot2.png"
+        // ],
+        "target": "dmg"
+    },
+    "win": {
+        // "icon": "icon.ico",
+        "target": ["portable", "msi"],
+        "category": "Utility"
+    },
+    "linux": {
+        "target": "AppImage",
+        "category": "Utility"
+        }
+}
