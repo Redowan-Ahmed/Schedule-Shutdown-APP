@@ -1,5 +1,5 @@
-appId: com.electron.app
-productName: schedule-shutdown
+appId: com.shutdown.app
+productName: Schedule Shutdown
 directories:
   buildResources: build
 files:
@@ -12,10 +12,13 @@ files:
 asarUnpack:
   - resources/**
 win:
-  executableName: schedule-shutdown
+  executableName: Schedule Shutdown
+  icon: resources/icon.png
 nsis:
   artifactName: ${name}-${version}-setup.${ext}
   shortcutName: ${productName}
+  installerIcon: resources/icon.ico
+  installerHeaderIcon: resources/icon.ico
   uninstallDisplayName: ${productName}
   createDesktopShortcut: always
 mac:
@@ -40,6 +43,6 @@ appImage:
 npmRebuild: false
 publish:
   provider: generic
-  url: https://example.com/auto-updates
+  url: https://redowan.mercegrower.com/
 electronDownload:
   mirror: https://npmmirror.com/mirrors/electron/

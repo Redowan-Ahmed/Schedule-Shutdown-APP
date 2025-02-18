@@ -1,10 +1,12 @@
 {
   "name": "schedule-shutdown",
   "version": "1.0.0",
-  "description": "An Electron application with React and TypeScript",
+  "productName": "Schedule Shutdown",
+  "description": "An application which can help to schedule your desktop to shutdown automatically at the scheduled time",
   "main": "./out/main/index.js",
-  "author": "example.com",
-  "homepage": "https://electron-vite.org",
+  "author": "Redowan Ahmed",
+  "homepage": "https://redowan.mercegrower.com/",
+  "license": "MIT",
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint --cache .",
@@ -23,12 +25,17 @@
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/utils": "^4.0.0",
+    "@radix-ui/react-select": "^2.1.6",
+    "@radix-ui/react-slider": "^1.2.3",
     "@radix-ui/react-slot": "^1.1.2",
+    "@radix-ui/react-tabs": "^1.1.3",
+    "@radix-ui/react-tooltip": "^1.1.8",
     "@tailwindcss/vite": "^4.0.7",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "electron-updater": "^6.3.9",
     "lucide-react": "^0.475.0",
+    "shelljs": "^0.8.5",
     "tailwind-merge": "^3.0.1",
     "tailwindcss-animate": "^1.0.7"
   },

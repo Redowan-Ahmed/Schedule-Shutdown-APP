@@ -1,20 +1,33 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, nativeImage, systemPreferences } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
+import { exec } from 'child_process'
+import os from 'os'
+
+const appIcon = nativeImage.createFromPath('/resources/icon.png')
 
 function createWindow(): void {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 900,
-    height: 670,
+    width: 700,
+    height: 570,
     show: false,
+    transparent: true,
+    // frame: false,
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
+    ...(process.platform !== 'darwin' ? { titleBarOverlay: true } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
-      sandbox: false
-    }
+      sandbox: false,
+      transparent: true,
+      devTools: true,
+      nodeIntegration: false,
+      contextIsolation: true
+    },
+    fullscreenable: false,
+    icon: appIcon
   })
 
   mainWindow.on('ready-to-show', () => {
@@ -40,7 +53,7 @@ function createWindow(): void {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
   // Set app user model id for windows
-  electronApp.setAppUserModelId('com.electron')
+  electronApp.setAppUserModelId('com.shutdown')
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.
@@ -51,6 +64,171 @@ app.whenReady().then(() => {
 
   // IPC test
   ipcMain.on('ping', () => console.log('pong'))
+  ipcMain.on('timePickerSubmit', (event, data) => {
+    switch (os.platform()) {
+      case 'aix':
+        console.log('IBM AIX platform')
+        exec(`shutdown -F +${data / 60}`, (error, stdout, stderr) => {
+          if (error) {
+            console.error(`Error: ${error.message}`)
+            return event.reply('form-submission-response', `Something Went Wrong: ${error.message}`)
+          }
+          if (stderr) {
+            console.error(`Stderr: ${stderr}`)
+            return event.reply('form-submission-response', `Something Went Wrong: ${stderr}`)
+          }
+          console.log(`Output: ${stdout}`)
+          event.reply(
+            'form-submission-response',
+            'Successfully Scheduled the system shutdown time and its started'
+          )
+        })
+        break
+      case 'android':
+        console.log('Android platform')
+        exec(`su -c 'reboot -p'`, (error, stdout, stderr) => {
+          if (error) {
+            console.error(`Error: ${error.message}`)
+            return event.reply('form-submission-response', `Something Went Wrong: ${error.message}`)
+          }
+          if (stderr) {
+            console.error(`Stderr: ${stderr}`)
+            return event.reply('form-submission-response', `Something Went Wrong: ${stderr}`)
+          }
+          console.log(`Output: ${stdout}`)
+          event.reply(
+            'form-submission-response',
+            'Successfully Scheduled the system shutdown time and its started'
+          )
+        })
+        break
+      case 'darwin':
+        console.log('Darwin platform(MacOS, IOS etc)')
+        exec(`sudo shutdown -h +${data / 60}`, (error, stdout, stderr) => {
+          if (error) {
+            console.error(`Error: ${error.message}`)
+            return event.reply('form-submission-response', `Something Went Wrong: ${error.message}`)
+          }
+          if (stderr) {
+            console.error(`Stderr: ${stderr}`)
+            return event.reply('form-submission-response', `Something Went Wrong: ${stderr}`)
+          }
+          console.log(`Output: ${stdout}`)
+          event.reply(
+            'form-submission-response',
+            'Successfully Scheduled the system shutdown time and its started'
+          )
+        })
+        break
+      case 'freebsd':
+        console.log('FreeBSD Platform')
+        exec(`shutdown -p +${data / 60}`, (error, stdout, stderr) => {
+          if (error) {
+            console.error(`Error: ${error.message}`)
+            return event.reply('form-submission-response', `Something Went Wrong: ${error.message}`)
+          }
+          if (stderr) {
+            console.error(`Stderr: ${stderr}`)
+            return event.reply('form-submission-response', `Something Went Wrong: ${stderr}`)
+          }
+          console.log(`Output: ${stdout}`)
+          event.reply(
+            'form-submission-response',
+            'Successfully Scheduled the system shutdown time and its started'
+          )
+        })
+        break
+      case 'linux':
+        console.log('Linux Platform')
+        exec(`shutdown -h +${data / 60}`, (error, stdout, stderr) => {
+          if (error) {
+            console.error(`Error: ${error.message}`)
+            return event.reply('form-submission-response', `Something Went Wrong: ${error.message}`)
+          }
+          if (stderr) {
+            console.error(`Stderr: ${stderr}`)
+            return event.reply('form-submission-response', `Something Went Wrong: ${stderr}`)
+          }
+          console.log(`Output: ${stdout}`)
+          event.reply(
+            'form-submission-response',
+            'Successfully Scheduled the system shutdown time and its started'
+          )
+        })
+        break
+      case 'openbsd':
+        console.log('OpenBSD platform')
+        exec(`shutdown -h +${data / 60}`, (error, stdout, stderr) => {
+          if (error) {
+            console.error(`Error: ${error.message}`)
+            return event.reply('form-submission-response', `Something Went Wrong: ${error.message}`)
+          }
+          if (stderr) {
+            console.error(`Stderr: ${stderr}`)
+            return event.reply('form-submission-response', `Something Went Wrong: ${stderr}`)
+          }
+          console.log(`Output: ${stdout}`)
+          event.reply(
+            'form-submission-response',
+            'Successfully Scheduled the system shutdown time and its started'
+          )
+        })
+        break
+      case 'sunos':
+        console.log('SunOS platform')
+        exec(`shutdown -i5 -g${data / 60} -y`, (error, stdout, stderr) => {
+          if (error) {
+            console.error(`Error: ${error.message}`)
+            return event.reply('form-submission-response', `Something Went Wrong: ${error.message}`)
+          }
+          if (stderr) {
+            console.error(`Stderr: ${stderr}`)
+            return event.reply('form-submission-response', `Something Went Wrong: ${stderr}`)
+          }
+          console.log(`Output: ${stdout}`)
+          event.reply(
+            'form-submission-response',
+            'Successfully Scheduled the system shutdown time and its started'
+          )
+        })
+        break
+      case 'win32':
+        console.log('windows platform')
+        exec(`shutdown -s -f -t ${data}`, (error, stdout, stderr) => {
+          if (error) {
+            console.error(`Error: ${error.message}`)
+            return event.reply('form-submission-response', `Something Went Wrong: ${error.message}`)
+          }
+          if (stderr) {
+            console.error(`Stderr: ${stderr}`)
+            return event.reply('form-submission-response', `Something Went Wrong: ${stderr}`)
+          }
+          console.log(`Output: ${stdout}`)
+          event.reply(
+            'form-submission-response',
+            'Successfully Scheduled the system shutdown time and its started'
+          )
+        })
+        break
+      default:
+        console.log('unknown platform')
+        exec(`shutdown -s -f -t ${data}`, (error, stdout, stderr) => {
+          if (error) {
+            console.error(`Error: ${error.message}`)
+            return event.reply('form-submission-response', `Something Went Wrong: ${error.message}`)
+          }
+          if (stderr) {
+            console.error(`Stderr: ${stderr}`)
+            return event.reply('form-submission-response', `Something Went Wrong: ${stderr}`)
+          }
+          console.log(`Output: ${stdout}`)
+          event.reply(
+            'form-submission-response',
+            'Successfully Scheduled the system shutdown time and its started'
+          )
+        })
+    }
+  })
 
   createWindow()
 
@@ -69,6 +247,3 @@ app.on('window-all-closed', () => {
     app.quit()
   }
 })
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
