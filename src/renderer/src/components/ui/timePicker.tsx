@@ -1,7 +1,6 @@
 import { FormEvent, useEffect, useState } from 'react'
 import { Button } from './button'
 import { Input } from './input'
-// import { ipcRenderer } from 'electron'
 
 function TimePicker(): JSX.Element {
   const currentTime = new Date().toLocaleString('en-US', {
@@ -18,24 +17,23 @@ function TimePicker(): JSX.Element {
 
   function handleSubmit(e: FormEvent): void {
     e.preventDefault()
-    const selectedDate = new Date();
-    const [selectedHours, selectedMinutes] = time.split(':').map(Number);
-    selectedDate.setHours(selectedHours, selectedMinutes, 0, 0);
-    const durationInMilliseconds: number = selectedDate - new Date()
+    const selectedDate = new Date()
+    const [selectedHours, selectedMinutes] = time.split(':').map(Number)
+    selectedDate.setHours(selectedHours, selectedMinutes, 0, 0)
+    const durationInMilliseconds: number = Number(selectedDate) - Number(new Date())
     const durationInSeconds: number = Math.floor(durationInMilliseconds / 1000)
     window.electron.ipcRenderer.send('timePickerSubmit', durationInSeconds)
     console.log(durationInSeconds, time)
   }
 
-
   useEffect(() => {
     window.electron.ipcRenderer.on('form-submission-response', (event, message) => {
-      console.log(message);
-    });
+      console.log(message, event)
+    })
     return (): void => {
-      window.electron.ipcRenderer.removeAllListeners('form-submission-response');
-    };
-  }, []);
+      window.electron.ipcRenderer.removeAllListeners('form-submission-response')
+    }
+  }, [])
 
   return (
     <div className="py-7 px-5 border border-zinc-800 rounded-md space-y-3">
