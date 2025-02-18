@@ -37,7 +37,7 @@ function ScheduleTimeRange(): JSX.Element {
               {current.toString()}
             </span>
           </div>
-          <Button className="w-full bg-zinc-800 p-3 font-bold text-lg h-fit" type="submit">
+          <Button className="w-full bg-zinc-800 p-3 font-bold text-lg h-fit uppercase" type="submit">
             Shutdown After {current.toString()} Hours{' '}
           </Button>
         </form>

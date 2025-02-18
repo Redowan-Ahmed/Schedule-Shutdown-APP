@@ -55,11 +55,11 @@ function TimePicker(): JSX.Element {
               id="time"
               value={time}
               required
-              className="focus:ring-transparent focus-visible:ring-transparent focus:outline-none focus:border-transparent block border-transparent dark:placeholder-gray-400 dark:text-white text-center text-4xl md:text-4xl placeholder:text-4xl w-auto"
+              className="focus:ring-transparent focus-visible:ring-transparent focus:outline-none focus:border-transparent block border-transparent dark:placeholder-gray-400 dark:text-white text-center text-4xl md:text-4xl placeholder:text-4xl w-auto font-bold"
             />
           </div>
-          <Button className="w-full bg-zinc-800 p-3 font-bold text-lg h-fit" type="submit">
-            Shutdown After Hours
+          <Button className="w-full bg-zinc-800 p-3 font-bold text-lg h-fit uppercase" type="submit">
+            System Will Be Shutdown at {time}
           </Button>
         </form>
       </div>
