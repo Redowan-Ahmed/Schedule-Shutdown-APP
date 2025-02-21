@@ -1,4 +1,4 @@
-appId: com.shutdown.app
+appId: com.schedule.shutdown
 productName: Schedule Shutdown
 directories:
   buildResources: build

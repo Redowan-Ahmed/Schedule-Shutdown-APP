@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow, ipcMain, nativeImage } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, nativeImage, Notification } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
@@ -6,6 +6,11 @@ import { exec } from 'child_process'
 import os from 'os'
 
 const appIcon = nativeImage.createFromPath('/resources/icon.png')
+
+// interface NotficationType {
+//   NOTIFICATION_TITLE: string
+//   NOTIFICATION_BODY: string
+// }
 
 function createWindow(): void {
   // Create the browser window.
@@ -48,12 +53,17 @@ function createWindow(): void {
   }
 }
 
+function showNotification(title: string, body: string): void {
+  new Notification({ title: title, body: body, icon: icon}).show()
+  
+}
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
   // Set app user model id for windows
-  electronApp.setAppUserModelId('com.shutdown')
+  electronApp.setAppUserModelId('Schedule Shutdown')
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.
@@ -71,13 +81,19 @@ app.whenReady().then(() => {
         exec(`shutdown -F +${data / 60}`, (error, stdout, stderr) => {
           if (error) {
             console.error(`Error: ${error.message}`)
+            showNotification('Error: Scheduler Error', `Error: ${error.message}`)
             return event.reply('form-submission-response', `Something Went Wrong: ${error.message}`)
           }
           if (stderr) {
             console.error(`Stderr: ${stderr}`)
+            showNotification('Error: Scheduler Went Wrong', `Error: ${stderr}`)
             return event.reply('form-submission-response', `Something Went Wrong: ${stderr}`)
           }
           console.log(`Output: ${stdout}`)
+          showNotification(
+            'Success: New Schedule is set',
+            'Successfully Scheduled the system shutdown time and its started'
+          )
           event.reply(
             'form-submission-response',
             'Successfully Scheduled the system shutdown time and its started'
@@ -89,13 +105,21 @@ app.whenReady().then(() => {
         exec(`su -c 'reboot -p'`, (error, stdout, stderr) => {
           if (error) {
             console.error(`Error: ${error.message}`)
+            showNotification('Error: Scheduler Error', `Error: ${error.message}`)
+
             return event.reply('form-submission-response', `Something Went Wrong: ${error.message}`)
           }
           if (stderr) {
             console.error(`Stderr: ${stderr}`)
+            showNotification('Error: Scheduler Went Wrong', `Error: ${stderr}`)
+
             return event.reply('form-submission-response', `Something Went Wrong: ${stderr}`)
           }
           console.log(`Output: ${stdout}`)
+          showNotification(
+            'Success: New Schedule is set',
+            'Successfully Scheduled the system shutdown time and its started'
+          )
           event.reply(
             'form-submission-response',
             'Successfully Scheduled the system shutdown time and its started'
@@ -107,13 +131,21 @@ app.whenReady().then(() => {
         exec(`sudo shutdown -h +${data / 60}`, (error, stdout, stderr) => {
           if (error) {
             console.error(`Error: ${error.message}`)
+            showNotification('Error: Scheduler Error', `Error: ${error.message}`)
+
             return event.reply('form-submission-response', `Something Went Wrong: ${error.message}`)
           }
           if (stderr) {
             console.error(`Stderr: ${stderr}`)
+            showNotification('Error: Scheduler Went Wrong', `Error: ${stderr}`)
+
             return event.reply('form-submission-response', `Something Went Wrong: ${stderr}`)
           }
           console.log(`Output: ${stdout}`)
+          showNotification(
+            'Success: New Schedule is set',
+            'Successfully Scheduled the system shutdown time and its started'
+          )
           event.reply(
             'form-submission-response',
             'Successfully Scheduled the system shutdown time and its started'
@@ -125,13 +157,21 @@ app.whenReady().then(() => {
         exec(`shutdown -p +${data / 60}`, (error, stdout, stderr) => {
           if (error) {
             console.error(`Error: ${error.message}`)
+            showNotification('Error: Scheduler Error', `Error: ${error.message}`)
+
             return event.reply('form-submission-response', `Something Went Wrong: ${error.message}`)
           }
           if (stderr) {
             console.error(`Stderr: ${stderr}`)
+            showNotification('Error: Scheduler Went Wrong', `Error: ${stderr}`)
+
             return event.reply('form-submission-response', `Something Went Wrong: ${stderr}`)
           }
           console.log(`Output: ${stdout}`)
+          showNotification(
+            'Success: New Schedule is set',
+            'Successfully Scheduled the system shutdown time and its started'
+          )
           event.reply(
             'form-submission-response',
             'Successfully Scheduled the system shutdown time and its started'
@@ -143,13 +183,21 @@ app.whenReady().then(() => {
         exec(`shutdown -h +${data / 60}`, (error, stdout, stderr) => {
           if (error) {
             console.error(`Error: ${error.message}`)
+            showNotification('Error: Scheduler Error', `Error: ${error.message}`)
+
             return event.reply('form-submission-response', `Something Went Wrong: ${error.message}`)
           }
           if (stderr) {
             console.error(`Stderr: ${stderr}`)
+            showNotification('Error: Scheduler Went Wrong', `Error: ${stderr}`)
+
             return event.reply('form-submission-response', `Something Went Wrong: ${stderr}`)
           }
           console.log(`Output: ${stdout}`)
+          showNotification(
+            'Success: New Schedule is set',
+            'Successfully Scheduled the system shutdown time and its started'
+          )
           event.reply(
             'form-submission-response',
             'Successfully Scheduled the system shutdown time and its started'
@@ -161,13 +209,21 @@ app.whenReady().then(() => {
         exec(`shutdown -h +${data / 60}`, (error, stdout, stderr) => {
           if (error) {
             console.error(`Error: ${error.message}`)
+            showNotification('Error: Scheduler Error', `Error: ${error.message}`)
+
             return event.reply('form-submission-response', `Something Went Wrong: ${error.message}`)
           }
           if (stderr) {
             console.error(`Stderr: ${stderr}`)
+            showNotification('Error: Scheduler Went Wrong', `Error: ${stderr}`)
+
             return event.reply('form-submission-response', `Something Went Wrong: ${stderr}`)
           }
           console.log(`Output: ${stdout}`)
+          showNotification(
+            'Success: New Schedule is set',
+            'Successfully Scheduled the system shutdown time and its started'
+          )
           event.reply(
             'form-submission-response',
             'Successfully Scheduled the system shutdown time and its started'
@@ -179,13 +235,21 @@ app.whenReady().then(() => {
         exec(`shutdown -i5 -g${data / 60} -y`, (error, stdout, stderr) => {
           if (error) {
             console.error(`Error: ${error.message}`)
+            showNotification('Error: Scheduler Error', `Error: ${error.message}`)
+
             return event.reply('form-submission-response', `Something Went Wrong: ${error.message}`)
           }
           if (stderr) {
             console.error(`Stderr: ${stderr}`)
+            showNotification('Error: Scheduler Went Wrong', `Error: ${stderr}`)
+
             return event.reply('form-submission-response', `Something Went Wrong: ${stderr}`)
           }
           console.log(`Output: ${stdout}`)
+          showNotification(
+            'Success: New Schedule is set',
+            'Successfully Scheduled the system shutdown time and its started'
+          )
           event.reply(
             'form-submission-response',
             'Successfully Scheduled the system shutdown time and its started'
@@ -197,13 +261,20 @@ app.whenReady().then(() => {
         exec(`shutdown -s -f -t ${data}`, (error, stdout, stderr) => {
           if (error) {
             console.error(`Error: ${error.message}`)
+            showNotification('Error: Scheduler Error', `Error: ${error.message}`)
             return event.reply('form-submission-response', `Something Went Wrong: ${error.message}`)
           }
           if (stderr) {
             console.error(`Stderr: ${stderr}`)
+            showNotification('Error: Scheduler Went Wrong', `Error: ${stderr}`)
+
             return event.reply('form-submission-response', `Something Went Wrong: ${stderr}`)
           }
           console.log(`Output: ${stdout}`)
+          showNotification(
+            'Success: New Schedule is set',
+            'Successfully Scheduled the system shutdown time and its started'
+          )
           event.reply(
             'form-submission-response',
             'Successfully Scheduled the system shutdown time and its started'
@@ -215,13 +286,19 @@ app.whenReady().then(() => {
         exec(`shutdown -s -f -t ${data}`, (error, stdout, stderr) => {
           if (error) {
             console.error(`Error: ${error.message}`)
+            showNotification('Error: Scheduler Error', `Error: ${error.message}`)
             return event.reply('form-submission-response', `Something Went Wrong: ${error.message}`)
           }
           if (stderr) {
             console.error(`Stderr: ${stderr}`)
+            showNotification('Error: Scheduler Went Wrong', `Error: ${stderr}`)
             return event.reply('form-submission-response', `Something Went Wrong: ${stderr}`)
           }
           console.log(`Output: ${stdout}`)
+          showNotification(
+            'Success: New Schedule is set',
+            'Successfully Scheduled the system shutdown time and its started'
+          )
           event.reply(
             'form-submission-response',
             'Successfully Scheduled the system shutdown time and its started'

@@ -1,6 +1,16 @@
 import { FormEvent, useEffect, useState } from 'react'
 import { Button } from './button'
 import { Input } from './input'
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger
+} from './drawer'
 
 function TimePicker(): JSX.Element {
   const currentTime = new Date().toLocaleString('en-US', {
@@ -14,6 +24,7 @@ function TimePicker(): JSX.Element {
     currentTimeChecked = `0${currentTimeChecked.split(':')[0]}:${currentTimeChecked.split(':')[1]}`
   }
   const [time, setTime] = useState<string>(currentTimeChecked)
+  const [open, setOpen] = useState<boolean>(false)
 
   function handleSubmit(e: FormEvent): void {
     e.preventDefault()
@@ -24,6 +35,18 @@ function TimePicker(): JSX.Element {
     const durationInSeconds: number = Math.floor(durationInMilliseconds / 1000)
     window.electron.ipcRenderer.send('timePickerSubmit', durationInSeconds)
     console.log(durationInSeconds, time)
+    setOpen(false)
+  }
+
+  function handleSubmitClick(): void {
+    const selectedDate = new Date()
+    const [selectedHours, selectedMinutes] = time.split(':').map(Number)
+    selectedDate.setHours(selectedHours, selectedMinutes, 0, 0)
+    const durationInMilliseconds: number = Number(selectedDate) - Number(new Date())
+    const durationInSeconds: number = Math.floor(durationInMilliseconds / 1000)
+    window.electron.ipcRenderer.send('timePickerSubmit', durationInSeconds)
+    console.log(durationInSeconds, time)
+    setOpen(false)
   }
 
   useEffect(() => {
@@ -46,7 +69,10 @@ function TimePicker(): JSX.Element {
       <div>
         <form className="space-y-3" onSubmit={handleSubmit}>
           <label htmlFor="time">Set Shutdown Hours from now: </label>
-          <div className="text-white flex justify-center focus:ring-blue-500 focus:border-blue-500 p-4 border rounded-lg border-zinc-800 ">
+          <label
+            htmlFor="time"
+            className="text-white flex justify-center focus:ring-blue-500 focus:border-blue-500 p-4 border rounded-lg border-zinc-800 cursor-pointer"
+          >
             <Input
               onChange={(e) => setTime(e.target.value)}
               type="time"
@@ -57,10 +83,38 @@ function TimePicker(): JSX.Element {
               required
               className="focus:ring-transparent focus-visible:ring-transparent focus:outline-none focus:border-transparent block border-transparent dark:placeholder-gray-400 dark:text-white text-center text-4xl md:text-4xl placeholder:text-4xl w-auto font-bold"
             />
-          </div>
-          <Button className="w-full bg-zinc-800 p-3 font-bold text-lg h-fit uppercase" type="submit">
-            System Will Be Shutdown at {time}
-          </Button>
+          </label>
+          <Drawer open={open} onOpenChange={setOpen}>
+            <DrawerTrigger className="w-full bg-zinc-800 p-3 font-bold text-lg h-fit uppercase">
+              System Will Be Shutdown at {time}
+            </DrawerTrigger>
+
+            <DrawerContent className="bg-zinc-900 border-none">
+              <DrawerHeader className="text-white text-center">
+                <DrawerTitle className="text-center">Are you absolutely sure?</DrawerTitle>
+                <DrawerDescription className="text-center">
+                  This action cannot be undone.
+                </DrawerDescription>
+              </DrawerHeader>
+              <DrawerFooter className="">
+                <Button
+                  onClick={handleSubmitClick}
+                  className="w-full bg-zinc-800 p-3 font-bold text-lg h-fit uppercase"
+                  type="submit"
+                >
+                  I Confirm The System Will Be Shutdown at {time}
+                </Button>
+                <DrawerClose>
+                  <Button
+                    className="w-full bg-red-800 p-3 font-bold text-lg h-fit uppercase text-white border-none"
+                    variant="outline"
+                  >
+                    Cancel
+                  </Button>
+                </DrawerClose>
+              </DrawerFooter>
+            </DrawerContent>
+          </Drawer>
         </form>
       </div>
     </div>

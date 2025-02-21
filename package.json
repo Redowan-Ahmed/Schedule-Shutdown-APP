@@ -1,6 +1,6 @@
 {
   "name": "schedule-shutdown",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "productName": "Schedule Shutdown",
   "description": "An application which can help to schedule your desktop to shutdown automatically at the scheduled time",
   "main": "./out/main/index.js",
@@ -25,6 +25,7 @@
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/utils": "^4.0.0",
+    "@radix-ui/react-dialog": "^1.1.6",
     "@radix-ui/react-select": "^2.1.6",
     "@radix-ui/react-slider": "^1.2.3",
     "@radix-ui/react-slot": "^1.1.2",
@@ -37,7 +38,8 @@
     "lucide-react": "^0.475.0",
     "shelljs": "^0.8.5",
     "tailwind-merge": "^3.0.1",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "vaul": "^1.1.2"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config-prettier": "^3.0.0",
