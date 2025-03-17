@@ -75,6 +75,7 @@ app.whenReady().then(() => {
   // IPC test
   ipcMain.on('ping', () => console.log('pong'))
   ipcMain.on('timePickerSubmit', (event, data) => {
+    console.log(os.platform())
     switch (os.platform()) {
       case 'aix':
         console.log('IBM AIX platform')
@@ -180,7 +181,8 @@ app.whenReady().then(() => {
         break
       case 'linux':
         console.log('Linux Platform')
-        exec(`shutdown -h +${data / 60}`, (error, stdout, stderr) => {
+        const linuxTime = Math.floor(data / 60);
+        exec(`shutdown +${linuxTime}`, (error, stdout, stderr) => {
           if (error) {
             console.error(`Error: ${error.message}`)
             showNotification('Error: Scheduler Error', `Error: ${error.message}`)
@@ -188,10 +190,12 @@ app.whenReady().then(() => {
             return event.reply('form-submission-response', `Something Went Wrong: ${error.message}`)
           }
           if (stderr) {
-            console.error(`Stderr: ${stderr}`)
-            showNotification('Error: Scheduler Went Wrong', `Error: ${stderr}`)
-
-            return event.reply('form-submission-response', `Something Went Wrong: ${stderr}`)
+            console.log(`Stderr: ${stderr}`)
+            showNotification(
+              'Success: New Schedule is set',
+              `Successfully Scheduled the system shutdown time and its the time is ${stderr}`
+            )
+            return event.reply('form-submission-response', `Success: New Schedule is set: ${stderr}`)
           }
           console.log(`Output: ${stdout}`)
           showNotification(
